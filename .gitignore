@@ -1,0 +1,4 @@
+# Crie o arquivo .gitignore na raiz do projeto e adicione:
+/node_modules
+/dist
+*.sqlite
