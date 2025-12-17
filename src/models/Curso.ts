@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional, Association } from 'sequelize';
-import database from '../db/config';
-import { Matricula } from './Matricula';
+import database from '../db/config.js';
+import { Matricula } from './Matricula.js';
 
 // Interface que define os atributos do nosso Modelo
 interface CursoAttributes {
