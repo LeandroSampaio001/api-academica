@@ -1,5 +1,4 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('alunos', {
@@ -11,25 +10,15 @@ module.exports = {
       },
       nome: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false // Requisito Slide 4
       },
-      idade: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      cpf: {
+      email: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false, // Requisito Slide 4
+        unique: true      // Requisito Slide 4
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      createdAt: { allowNull: false, type: Sequelize.DATE },
+      updatedAt: { allowNull: false, type: Sequelize.DATE }
     });
   },
   async down(queryInterface, Sequelize) {

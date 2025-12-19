@@ -10,20 +10,21 @@ module.exports = {
       },
       aluno_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'alunos', key: 'id' }, // Ligação com Aluno
+        allowNull: false, // Requisito Slide 4
+        references: { model: 'alunos', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       curso_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'cursos', key: 'id' }, // Ligação com Curso
+        allowNull: false, // Requisito Slide 4
+        references: { model: 'cursos', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       data_matricula: {
         type: Sequelize.DATE,
+        allowNull: false, // Requisito Slide 4
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       createdAt: { allowNull: false, type: Sequelize.DATE },

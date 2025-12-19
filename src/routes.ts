@@ -7,27 +7,34 @@ import MatriculaController from './controllers/MatriculaController.js';
 const routes = Router();
 
 /**
- * Rotas de Alunos
+ * 5.1. ROTAS DE ALUNOS (Slide 6)
  */
-routes.get('/alunos', AlunoController.index);           // Listar todos
-routes.get('/alunos/:id', AlunoController.show);       // Buscar um por ID
-routes.post('/alunos', AlunoController.store);         // Criar novo
-routes.put('/alunos/:id', AlunoController.update);     // Atualizar
-routes.delete('/alunos/:id', AlunoController.destroy);  // Deletar
+routes.get('/alunos', AlunoController.index);             // Lista todos os alunos
+routes.get('/alunos/:id', AlunoController.show);         // Detalha um aluno específico
+routes.post('/alunos', AlunoController.store);           // Cria um novo aluno
+routes.put('/alunos/:id', AlunoController.update);       // Atualiza dados de um aluno
+routes.delete('/alunos/:id', AlunoController.delete);     // Remove um aluno
+
+// Relação específica (Slide 6)
+routes.get('/alunos/:id/cursos', AlunoController.getCursos); // Lista todos os cursos de um aluno
 
 /**
- * Rotas de Cursos
+ * 5.2. ROTAS DE CURSOS (Slide 6)
  */
-routes.get('/cursos', CursoController.index);           // Listar todos
-routes.get('/cursos/:id', CursoController.show);       // Buscar um por ID
-routes.post('/cursos', CursoController.store);         // Criar novo
-routes.put('/cursos/:id', CursoController.update);     // Atualizar
-routes.delete('/cursos/:id', CursoController.destroy);  // Deletar
+routes.get('/cursos', CursoController.index);             // Lista todos os cursos
+routes.get('/cursos/:id', CursoController.show);         // Detalha um curso específico
+routes.post('/cursos', CursoController.store);           // Cria um novo curso
+routes.put('/cursos/:id', CursoController.update);       // Atualiza dados de um curso
+routes.delete('/cursos/:id', CursoController.delete);     // Remove um curso
+
+// Relação específica (Slide 6)
+routes.get('/cursos/:id/alunos', CursoController.getAlunos); // Lista todos os alunos de um curso
 
 /**
- * Rotas de Matrículas (Relacionamento Aluno x Curso)
+ * 5.3. ROTAS DE MATRÍCULAS (Relacionamento Aluno-Curso - Slide 6)
  */
-routes.get('/matriculas', MatriculaController.index);   // Listar todas as matrículas
-routes.post('/matriculas', MatriculaController.store); // Matricular um aluno em um curso
+routes.get('/matriculas', MatriculaController.index);     // Lista todas as matrículas
+routes.post('/matriculas', MatriculaController.store);   // Cria uma matrícula (liga aluno a curso)
+routes.delete('/matriculas/:id', MatriculaController.delete); // Remove uma matrícula (Opcional Slide 6)
 
 export default routes;

@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import database from '../db/config.js';
 
+// Atributos definidos no Slide 4
 interface MatriculaAttributes {
   id: number;
   aluno_id: number;
@@ -16,8 +17,8 @@ export class Matricula extends Model<MatriculaAttributes, MatriculaCreationAttri
   public curso_id!: number;
   public data_matricula!: Date;
 
-  // Define que a Matrícula PERTENCE a um Aluno e a um Curso
   static associate(models: any) {
+    // Relacionamentos inversos para permitir o uso de 'include' no Controller
     this.belongsTo(models.Aluno, { foreignKey: 'aluno_id', as: 'aluno' });
     this.belongsTo(models.Curso, { foreignKey: 'curso_id', as: 'curso' });
   }
@@ -25,12 +26,31 @@ export class Matricula extends Model<MatriculaAttributes, MatriculaCreationAttri
 
 Matricula.init(
   {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    aluno_id: { type: DataTypes.INTEGER, allowNull: false },
-    curso_id: { type: DataTypes.INTEGER, allowNull: false },
-    data_matricula: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    aluno_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'alunos', key: 'id' } // FK para Aluno (Slide 4)
+    },
+    curso_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'cursos', key: 'id' } // FK para Curso (Slide 4)
+    },
+    data_matricula: {
+      type: DataTypes.DATE,
+      allowNull: false, // Obrigatório conforme Slide 4
+      defaultValue: DataTypes.NOW,
+    },
   },
-  { sequelize: database, tableName: 'matriculas' }
+  {
+    sequelize: database,
+    tableName: 'matriculas',
+  }
 );
 
 export default Matricula;

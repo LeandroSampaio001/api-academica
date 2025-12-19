@@ -1,11 +1,12 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import database from '../db/config.js';
 
+// Atributos definidos no Slide 4
 interface CursoAttributes {
   id: number;
   nome: string;
-  descricao: string;
   carga_horaria: number;
+  modalidade: string; // Ex: "Presencial", "EAD"
 }
 
 interface CursoCreationAttributes extends Optional<CursoAttributes, 'id'> {}
@@ -13,22 +14,43 @@ interface CursoCreationAttributes extends Optional<CursoAttributes, 'id'> {}
 export class Curso extends Model<CursoAttributes, CursoCreationAttributes> implements CursoAttributes {
   public id!: number;
   public nome!: string;
-  public descricao!: string;
   public carga_horaria!: number;
+  public modalidade!: string;
 
   static associate(models: any) {
-    this.hasMany(models.Matricula, { foreignKey: 'curso_id', as: 'matriculas' });
+    // Relacionamento Muitos-para-Muitos (N:N) conforme Slide 5
+    this.belongsToMany(models.Aluno, { 
+      through: 'matriculas', 
+      foreignKey: 'curso_id', 
+      as: 'alunos' 
+    });
   }
 }
 
 Curso.init(
   {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    nome: { type: DataTypes.STRING, allowNull: false },
-    descricao: { type: DataTypes.STRING, allowNull: false },
-    carga_horaria: { type: DataTypes.INTEGER, allowNull: false },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    nome: {
+      type: DataTypes.STRING,
+      allowNull: false, // Obrigatório conforme Slide 4
+    },
+    carga_horaria: {
+      type: DataTypes.INTEGER,
+      allowNull: false, // Obrigatório conforme Slide 4
+    },
+    modalidade: {
+      type: DataTypes.STRING,
+      allowNull: false, // Obrigatório conforme Slide 4
+    },
   },
-  { sequelize: database, tableName: 'cursos' }
+  {
+    sequelize: database,
+    tableName: 'cursos',
+  }
 );
 
 export default Curso;
