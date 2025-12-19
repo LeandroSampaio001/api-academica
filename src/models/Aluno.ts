@@ -1,57 +1,55 @@
-import { Model, DataTypes, Optional, Association } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import database from '../db/config.js';
-import { Matricula } from './Matricula.js';
 
-// Interface que define os atributos do nosso Modelo
+// 1. Definimos a interface com todos os campos que o Aluno possui
 interface AlunoAttributes {
   id: number;
   nome: string;
-  email: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  idade: number; // Campo que estava faltando na tipagem
+  cpf: string;
 }
 
-// Opcionais na criação (o ID é autoincrementado)
+// 2. Definimos quais campos são opcionais na hora de CRIAR um aluno (o ID é gerado pelo banco)
 interface AlunoCreationAttributes extends Optional<AlunoAttributes, 'id'> {}
 
-// Exporta a classe Aluno, estendendo o Model do Sequelize
+// 3. Criamos a classe do Model estendendo a classe Model do Sequelize
 export class Aluno extends Model<AlunoAttributes, AlunoCreationAttributes> implements AlunoAttributes {
-  // Atributos
   public id!: number;
   public nome!: string;
-  public email!: string;
+  public idade!: number;
+  public cpf!: string;
 
-  // Timestamps
+  // Timestamps (opcional, mas o Sequelize cria por padrão se não desabilitar)
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-
-  // Define a associação (relacionamento) - Configuração M:M
-  public static associations: {
-    matriculas: Association<Aluno, Matricula>;
-  };
 }
 
-// Inicialização do Modelo (Definição dos campos)
+// 4. Inicializamos o Model com a estrutura da tabela
 Aluno.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false
     },
     nome: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    email: {
+    idade: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    cpf: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true, // CPF deve ser único
     },
   },
   {
-    sequelize: database, // Define a instância de conexão que está em '../db/config'
-    tableName: 'Alunos', // Nome da tabela no banco
+    sequelize: database,
+    tableName: 'alunos',
   }
 );
+
+export default Aluno;
