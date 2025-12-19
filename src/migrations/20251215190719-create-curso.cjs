@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cursos', {
+    await queryInterface.createTable('cursos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,15 +11,15 @@ module.exports = {
       },
       nome: {
         type: Sequelize.STRING,
-        allowNull: false // CAMPO OBRIGATÓRIO
+        allowNull: false
       },
-      cargaHoraria: {
-        type: Sequelize.INTEGER,
-        allowNull: false // CAMPO OBRIGATÓRIO
-      },
-      modalidade: {
+      descricao: {
         type: Sequelize.STRING,
-        allowNull: false // CAMPO OBRIGATÓRIO
+        allowNull: false
+      },
+      carga_horaria: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Cursos');
+    await queryInterface.dropTable('cursos');
   }
 };

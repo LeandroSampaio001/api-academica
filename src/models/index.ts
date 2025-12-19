@@ -2,15 +2,18 @@ import { Aluno } from './Aluno.js';
 import { Curso } from './Curso.js';
 import { Matricula } from './Matricula.js';
 
-// Define um objeto que contém todos os modelos para facilitar a associação
-const models = {
+const models: any = {
   Aluno,
   Curso,
   Matricula,
 };
 
-// Configuração das associações (Relacionamentos)
-// Chamamos o método associate que definimos em Matricula.ts
-Matricula.associate(models);
+// Ativa as associações e nos avisa no terminal
+Object.values(models).forEach((model: any) => {
+  if (typeof model.associate === 'function') {
+    console.log(`🔗 Ativando associações para: ${model.name}`);
+    model.associate(models);
+  }
+});
 
-export default models;
+export { Aluno, Curso, Matricula };

@@ -1,83 +1,36 @@
-import { Model, DataTypes, Optional, Association } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import database from '../db/config.js';
-import { Aluno } from './Aluno.js';
-import { Curso } from './Curso.js';
 
-// Interface que define os atributos do nosso Modelo
 interface MatriculaAttributes {
   id: number;
-  alunoId: number;
-  cursoId: number;
-  dataMatricula: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
+  aluno_id: number;
+  curso_id: number;
+  data_matricula: Date;
 }
 
-// Opcionais na criação (o ID é autoincrementado)
-interface MatriculaCreationAttributes extends Optional<MatriculaAttributes, 'id'> {}
+interface MatriculaCreationAttributes extends Optional<MatriculaAttributes, 'id' | 'data_matricula'> {}
 
-// Exporta a classe Matricula, estendendo o Model do Sequelize
 export class Matricula extends Model<MatriculaAttributes, MatriculaCreationAttributes> implements MatriculaAttributes {
-  // Atributos
   public id!: number;
-  public alunoId!: number;
-  public cursoId!: number;
-  public dataMatricula!: Date;
+  public aluno_id!: number;
+  public curso_id!: number;
+  public data_matricula!: Date;
 
-  // Timestamps
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-
-  // Associações (Relacionamentos)
-  // Campos criados pelo Sequelize para carregar dados
-  public Aluno?: Aluno;
-  public Curso?: Curso;
-
-  public static associations: {
-    Aluno: Association<Matricula, Aluno>;
-    Curso: Association<Matricula, Curso>;
-  };
-
-  // Método de configuração das Associações (Chamaremos ele no próximo passo)
-  public static associate(models: { Aluno: typeof Aluno, Curso: typeof Curso, Matricula: typeof Matricula }) {
-    // Matrícula pertence a Aluno (1:N Inverso)
-    Matricula.belongsTo(models.Aluno, {
-      foreignKey: 'alunoId',
-      as: 'aluno'
-    });
-
-    // Matrícula pertence a Curso (1:N Inverso)
-    Matricula.belongsTo(models.Curso, {
-      foreignKey: 'cursoId',
-      as: 'curso'
-    });
+  // Define que a Matrícula PERTENCE a um Aluno e a um Curso
+  static associate(models: any) {
+    this.belongsTo(models.Aluno, { foreignKey: 'aluno_id', as: 'aluno' });
+    this.belongsTo(models.Curso, { foreignKey: 'curso_id', as: 'curso' });
   }
 }
 
-// Inicialização do Modelo (Definição dos campos)
 Matricula.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
-    },
-    alunoId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    cursoId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    dataMatricula: {
-        type: DataTypes.DATE,
-        allowNull: false
-    }
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    aluno_id: { type: DataTypes.INTEGER, allowNull: false },
+    curso_id: { type: DataTypes.INTEGER, allowNull: false },
+    data_matricula: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },
-  {
-    sequelize: database, // Define a instância de conexão
-    tableName: 'Matriculas', // Nome da tabela no banco
-  }
+  { sequelize: database, tableName: 'matriculas' }
 );
+
+export default Matricula;

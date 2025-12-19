@@ -1,49 +1,36 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Matriculas', {
+    await queryInterface.createTable('matriculas', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      alunoId: {
+      aluno_id: {
         type: Sequelize.INTEGER,
-        allowNull: false, // OBRIGATÓRIO
-        references: {
-          model: 'Alunos', // Tabela que referencia
-          key: 'id'        // Chave referenciada
-        },
-        onUpdate: 'CASCADE', // Atualiza em cascata
-        onDelete: 'CASCADE'  // Deleta a matrícula se o Aluno for excluído
+        allowNull: false,
+        references: { model: 'alunos', key: 'id' }, // Ligação com Aluno
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      cursoId: {
+      curso_id: {
         type: Sequelize.INTEGER,
-        allowNull: false, // OBRIGATÓRIO
-        references: {
-          model: 'Cursos', // Tabela que referencia
-          key: 'id'        // Chave referenciada
-        },
-        onUpdate: 'CASCADE', // Atualiza em cascata
-        onDelete: 'CASCADE'  // Deleta a matrícula se o Curso for excluído
+        allowNull: false,
+        references: { model: 'cursos', key: 'id' }, // Ligação com Curso
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      dataMatricula: {
+      data_matricula: {
         type: Sequelize.DATE,
-        allowNull: false // OBRIGATÓRIO
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      createdAt: { allowNull: false, type: Sequelize.DATE },
+      updatedAt: { allowNull: false, type: Sequelize.DATE }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Matriculas');
+    await queryInterface.dropTable('matriculas');
   }
 };
